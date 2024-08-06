@@ -25,6 +25,17 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Install ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Run ollama
+        run: |
+          ollama serve &
+          ollama pull phi3:mini
+      - name: Call ollama API
+        run: |
+          curl -d '{"model": "phi3:mini", "stream": false, "prompt":"Whatever I say, asnwer with Yes"}' http://localhost:11434/api/generate
+
       - name: Create and start virtual environment
         run: |
           python -m venv venv
